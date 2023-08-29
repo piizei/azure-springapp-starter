@@ -111,19 +111,19 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -out my.plan  \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}"
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
 
       - name: Terraform Apply
         run: terraform apply my.plan
@@ -153,19 +153,19 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -out my.plan \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}"
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
       - name: Terraform Apply
         run: terraform apply my.plan
       - name: Terraform Output
@@ -199,19 +199,19 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -out my.plan  \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}" \
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}" \
           -var="jump_host_admin_username=${{ env.JUMP_BOX_USERNAME }}" \
           -var="jump_host_password=${{ env.JUMP_BOX_PASSWORD}}"
       - name: Terraform Apply
@@ -242,19 +242,19 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -out my.plan \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}"
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
       - name: Terraform Apply
         if: needs.conditions.outputs.deploy_firewall == 'true'
         run: terraform apply my.plan
@@ -284,19 +284,19 @@ jobs:
             - name: Terraform Init
               run: |
                 terraform init \
-                -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-                -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-                -backend-config="container_name=${{ env.CONTAINERNAME }}"
+                -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+                -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+                -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
             - name: Terraform Plan
               run: |
                 terraform plan -out my.plan \
-                -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-                -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-                -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+                -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+                -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+                -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
                 -var="location=${{ env.REGION }}" \
                 -var="name_prefix=${{ env.NAME_PREFIX }}" \
                 -var="environment=${{ env.ENVIRONMENT }}" \
-                -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}"
+                -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
             - name: Terraform Apply
               run: terraform apply my.plan
             - name: Terraform Output
@@ -327,9 +327,9 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -out my.plan \
@@ -467,9 +467,9 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -destroy -out my.plan \
@@ -507,19 +507,19 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -destroy -out my.plan \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}"
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
       - name: Terraform Apply
         run: terraform apply my.plan
   destroy_hub_firewall:
@@ -545,19 +545,19 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -destroy -out my.plan \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}"
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
       - name: Terraform Apply
         run: terraform apply my.plan
   destroy_lz_shared:
@@ -583,19 +583,19 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -destroy -out my.plan \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}" \
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}" \
           -var="jump_host_admin_username=${{ env.JUMP_BOX_USERNAME }}" \
           -var="jump_host_password=${{ env.JUMP_BOX_PASSWORD}}"
       - name: Terraform Apply
@@ -622,19 +622,19 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -destroy -out my.plan \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}"
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
       - name: Terraform Apply
         run: terraform apply my.plan
   destroy_hub_network:
@@ -659,18 +659,18 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-          -backend-config="resource_group_name=${{ env.TFSTATE_RG }}" \
-          -backend-config="storage_account_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -backend-config="container_name=${{ env.CONTAINERNAME }}"
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
       - name: Terraform Plan
         run: |
           terraform plan -destroy -out my.plan \
-          -var="state_sa_rg=${{ env.TFSTATE_RG }}" \
-          -var="state_sa_name=${{ env.STORAGEACCOUNTNAME }}" \
-          -var="state_sa_container_name=${{ env.CONTAINERNAME }}" \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
           -var="location=${{ env.REGION }}" \
           -var="name_prefix=${{ env.NAME_PREFIX }}" \
           -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ env.SPRINGAPPS_SPN_OBJECT_ID }}"
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
       - name: Terraform Apply
         run: terraform apply my.plan
