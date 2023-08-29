@@ -28,7 +28,7 @@ env:
   SPRINGAPPS_SPN_OBJECT_ID: ${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}
 
   # === Pet Clinic Required Settings ===:
-  DB_ADMIN_USERNAME: admin
+  DB_ADMIN_USERNAME: sqladmin
   DB_ADMIN_PASSWORD: ${{ secrets.DB_ADMIN_PASSWORD }}
 
   # ==== Terraform Backend ===:

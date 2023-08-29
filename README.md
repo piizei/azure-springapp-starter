@@ -4,6 +4,18 @@ Based on [Azure Spring Apps Landing Zone Accelerator} (https://github.com/Azure/
 This is a hardened microservice application with a separate frontend and a BFF.
 ![Diagram](./architecture.drawio.png)
 
+## Hardenings (work in progress)
+Over the LZA blueprint following hardenings are added
+[] AAD Administrator for PostgreSQL
+[] Managed identity connections
+[] EGRESS firewalling from Spring Apps
+
+## Application level changes
+
+[] Improvements on observability
+[] FE - BFF - BE architecture
+[] Event driven microservices
+
 ## Terraform State Management
 
 In this example, state is stored in an Azure Storage account that was created out-of-band.  All deployments reference this storage account to either store state or reference variables from other parts of the deployment however you may choose to use other tools for state management, like Terraform Cloud after making the necessary code changes.
