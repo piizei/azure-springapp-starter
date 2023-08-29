@@ -28,8 +28,8 @@ env:
   SPRINGAPPS_SPN_OBJECT_ID: ${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}
 
   # === Pet Clinic Required Settings ===:
-  MYSQL_ADMIN_USERNAME: mySqlAdmin
-  MYSQL_ADMIN_PASSWORD: ${{ secrets.MYSQL_ADMIN_PASSWORD }}
+  DB_ADMIN_USERNAME: admin
+  DB_ADMIN_PASSWORD: ${{ secrets.DB_ADMIN_PASSWORD }}
 
   # ==== Terraform Backend ===:
   TFSTATE_RG: ${{ secrets.TFSTATE_RG }}
@@ -67,7 +67,7 @@ jobs:
       environment: ${{ env.ENVIRONMENT}}
       region: ${{env.REGION}}
       jumpbox_username: ${{ env.JUMP_BOX_USERNAME}}
-      mysql_admin_name: ${{env.MYSQL_ADMIN_USERNAME}}
+      db_admin_name: ${{env.DB_ADMIN_USERNAME}}
     steps:
       - name: Deploy Firewall Override
         if: ${{vars.DEPLOY_FIREWALL_STANDARD != 0 }} 
@@ -87,9 +87,9 @@ jobs:
       - name: Override Jump Box Username
         if: ${{vars.JUMP_BOX_USERNAME != 0 }} 
         run: echo "JUMP_BOX_USERNAME=${{ vars.JUMP_BOX_USERNAME }}" >> $GITHUB_ENV
-      - name: Override MySQl Admin Username
-        if: ${{vars.MYSQL_ADMIN_USERNAME != 0 }} 
-        run: echo "MYSQL_ADMIN_USERNAME=${{ vars.MYSQL_ADMIN_USERNAME }}" >> $GITHUB_ENV
+      - name: Override DB Admin Username
+        if: ${{vars.DB_ADMIN_USERNAME != 0 }} 
+        run: echo "DB_ADMIN_USERNAME=${{ vars.DB_ADMIN_USERNAME }}" >> $GITHUB_ENV
   deploy_hub_network:
     name: Deploy 02 Hub Network
     needs: conditions
@@ -314,12 +314,11 @@ jobs:
     needs: [deploy_lz_standard, deploy_lz_shared, deploy_lz_network, conditions]
     runs-on: ubuntu-latest
     environment: dev
-    if: ${{ false }}
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
       REGION: ${{ needs.conditions.outputs.region}}
-      MYSQL_ADMIN_USERNAME: ${{needs.conditions.outputs.mysql_admin_name}}
+      DB_ADMIN_USERNAME: ${{needs.conditions.outputs.db_admin_name}}
     defaults:
       run:
         working-directory: Scenarios/sample-apps/petclinic/terraform
@@ -342,8 +341,8 @@ jobs:
           -var="spring_cloud_service=${{ needs.deploy_lz_standard.outputs.spring_apps_service_name }}" \
           -var="spring_cloud_resource_group_name=${{ needs.deploy_lz_standard.outputs.spring_apps_rg }}" \
           -var="subscription_id=${{ env.SUBSCRIPTION_ID}}" \
-          -var="mysql_server_admin_password=${{ env.MYSQL_ADMIN_PASSWORD }}" \
-          -var="mysql_server_admin_username=${{ env.MYSQL_ADMIN_USERNAME }}" \
+          -var="db_server_admin_password=${{ env.DB_ADMIN_PASSWORD }}" \
+          -var="db_server_admin_username=${{ env.DB_ADMIN_USERNAME }}" \
           -var="resource_group=${{ needs.deploy_lz_network.outputs.spoke_rg }}" \
           -var="vnet_spoke_name=${{ needs.deploy_lz_network.outputs.spoke_vnet_name }}" \
           -var="private_zones_resource_group_name=${{ needs.deploy_lz_network.outputs.private_dns_rg }}" \
@@ -461,7 +460,7 @@ jobs:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
       REGION: ${{ needs.conditions.outputs.region}}
-      MYSQL_ADMIN_USERNAME: ${{needs.conditions.outputs.mysql_admin_name}}
+      DB_ADMIN_USERNAME: ${{needs.conditions.outputs.db_admin_name}}
     defaults:
       run:
         working-directory: Scenarios/sample-apps/petclinic/terraform
@@ -484,8 +483,8 @@ jobs:
           -var="spring_cloud_service=${{ needs.deploy_lz_standard.outputs.spring_apps_service_name }}" \
           -var="spring_cloud_resource_group_name=${{ needs.deploy_lz_standard.outputs.spring_apps_rg }}" \
           -var="subscription_id=${{ env.SUBSCRIPTION_ID}}" \
-          -var="mysql_server_admin_password=${{ env.MYSQL_ADMIN_PASSWORD }}" \
-          -var="mysql_server_admin_username=${{ env.MYSQL_ADMIN_USERNAME }}" \
+          -var="db_server_admin_password=${{ env.DB_ADMIN_PASSWORD }}" \
+          -var="db_server_admin_username=${{ env.DB_ADMIN_USERNAME }}" \
           -var="resource_group=${{ needs.deploy_lz_network.outputs.spoke_rg }}" \
           -var="vnet_spoke_name=${{ needs.deploy_lz_network.outputs.spoke_vnet_name }}" \
           -var="private_zones_resource_group_name=${{ needs.deploy_lz_network.outputs.private_dns_rg }}" \
@@ -502,7 +501,7 @@ jobs:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
       REGION: ${{ needs.conditions.outputs.region}}
-      MYSQL_ADMIN_USERNAME: ${{needs.conditions.outputs.mysql_admin_name}}
+      DB_ADMIN_USERNAME: ${{needs.conditions.outputs.db_admin_name}}
     defaults:
       run:
         working-directory: Scenarios/ASA-Secure-Baseline/Terraform/06-LZ-SpringApps-Standard
@@ -541,7 +540,7 @@ jobs:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
       REGION: ${{ needs.conditions.outputs.region}}
-      MYSQL_ADMIN_USERNAME: ${{needs.conditions.outputs.mysql_admin_name}}
+      DB_ADMIN_USERNAME: ${{needs.conditions.outputs.db_admin_name}}
     defaults:
       run:
         working-directory: Scenarios/ASA-Secure-Baseline/Terraform/05-Hub-AzureFirewall
