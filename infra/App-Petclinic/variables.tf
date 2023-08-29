@@ -52,7 +52,7 @@ variable "vets_service" {
 
 variable "db_server_admin_username" {
   type    = string
-  default = "admin"
+  default = "sqladmin"
 }
 
 variable "db_server_admin_password" {
