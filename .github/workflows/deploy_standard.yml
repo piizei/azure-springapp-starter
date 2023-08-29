@@ -60,6 +60,7 @@ env:
 jobs:
   conditions:
     runs-on: ubuntu-latest
+    environment: dev
     outputs:
       deploy_firewall: "${{ env.DEPLOY_FIREWALL_STANDARD }}"
       destroy: "${{ env.DESTROY_STANDARD }}"
