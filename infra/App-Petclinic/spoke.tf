@@ -17,10 +17,10 @@ resource "azurerm_network_security_group" "default" {
 }
 
 resource "azurerm_subnet" "default" {
-  name                 = "default-subnet"
+  name                 = "posgresql-subnet"
   virtual_network_name = data.azurerm_virtual_network.spoke.name
   resource_group_name  = data.azurerm_resource_group.spoke_rg.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["${var.db_CIDR}"]
   service_endpoints    = ["Microsoft.Storage"]
 
   delegation {
