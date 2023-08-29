@@ -18,29 +18,29 @@ env:
   ENVIRONMENT: dev
 
   # === Spring Apps Service ===:
-  SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+  SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   JUMP_BOX_USERNAME: ltzadmin
   JUMP_BOX_PASSWORD: ${{ secrets.JUMP_BOX_PASSWORD }}
   
   # Specify the Object ID for the "Azure Spring Apps Resource Provider" service principal in the customer's Azure AD Tenant
   # Use this command to obtain:
   #    az ad sp show --id e8de9221-a19c-4c81-b814-fd37c6caf9d2 --query id --output tsv
-  SPRINGAPPS_SPN_OBJECT_ID: ${{ vars.SPRINGAPPS_SPN_OBJECT_ID }}
+  SPRINGAPPS_SPN_OBJECT_ID: ${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}
 
   # === Pet Clinic Required Settings ===:
   MYSQL_ADMIN_USERNAME: mySqlAdmin
   MYSQL_ADMIN_PASSWORD: ${{ secrets.MYSQL_ADMIN_PASSWORD }}
 
   # ==== Terraform Backend ===:
-  TFSTATE_RG: ${{ vars.TFSTATE_RG }}
-  STORAGEACCOUNTNAME: ${{ vars.STORAGEACCOUNTNAME }}
-  CONTAINERNAME: ${{ vars.CONTAINERNAME_STANDARD }}
+  TFSTATE_RG: ${{ secrets.TFSTATE_RG }}
+  STORAGEACCOUNTNAME: ${{ secrets.STORAGEACCOUNTNAME }}
+  CONTAINERNAME: ${{ secrets.CONTAINERNAME_STANDARD }}
 
   # ==== Terraform Azure Login ===:
-  ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
 
   # ==== APPS ====:
