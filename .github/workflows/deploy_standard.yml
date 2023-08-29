@@ -321,7 +321,7 @@ jobs:
       DB_ADMIN_USERNAME: ${{needs.conditions.outputs.db_admin_name}}
     defaults:
       run:
-        working-directory: Scenarios/sample-apps/petclinic/terraform
+        working-directory: infra/App-Petclinic
     steps:
       - name: Checkout this repository
         uses: actions/checkout@v3
