@@ -60,7 +60,6 @@ env:
 jobs:
   conditions:
     runs-on: ubuntu-latest
-    environment: dev
     outputs:
       deploy_firewall: "${{ env.DEPLOY_FIREWALL_STANDARD }}"
       destroy: "${{ env.DESTROY_STANDARD }}"
@@ -95,6 +94,7 @@ jobs:
     name: Deploy 02 Hub Network
     needs: conditions
     runs-on: ubuntu-latest
+    environment: dev
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
@@ -132,6 +132,7 @@ jobs:
     needs: [deploy_hub_network, conditions]
     name: Deploy 03 LZ Network
     runs-on: ubuntu-latest
+    environment: dev
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
@@ -180,6 +181,7 @@ jobs:
     needs: [deploy_lz_network, conditions]
     name: Deploy 04 LZ Shared Resources
     runs-on: ubuntu-latest
+    environment: dev
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
@@ -226,6 +228,7 @@ jobs:
     needs: [deploy_hub_network, deploy_lz_shared, conditions]
     name: Deploy 05 Hub Firewall
     runs-on: ubuntu-latest
+    environment: dev
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
@@ -261,54 +264,56 @@ jobs:
         run: terraform apply my.plan
 
   deploy_lz_standard:
-          needs:
-            [deploy_hub_network, deploy_lz_shared, deploy_hub_firewall, conditions]
-          name: Deploy 06 LZ Spring Apps Standard
-          runs-on: ubuntu-latest
-          env:
-            NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
-            ENVIRONMENT: ${{needs.conditions.outputs.environment}}
-            REGION: ${{ needs.conditions.outputs.region}}
-          outputs:
-            spring_apps_service_name: ${{ steps.output.outputs.spring_apps_service_name }}
-            spring_apps_rg: ${{ steps.output.outputs.spring_apps_rg }}
-          defaults:
-            run:
-              working-directory: infra/06-LZ-SpringApps-Standard
-          steps:
-            - name: Checkout this repository
-              uses: actions/checkout@v3
-            - name: Setup Terraform
-              uses: hashicorp/setup-terraform@v2.0.3
-              with:
-                terraform_wrapper: false
-            - name: Terraform Init
-              run: |
-                terraform init \
-                -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
-                -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
-                -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
-            - name: Terraform Plan
-              run: |
-                terraform plan -out my.plan \
-                -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
-                -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
-                -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
-                -var="location=${{ env.REGION }}" \
-                -var="name_prefix=${{ env.NAME_PREFIX }}" \
-                -var="environment=${{ env.ENVIRONMENT }}" \
-                -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
-            - name: Terraform Apply
-              run: terraform apply my.plan
-            - name: Terraform Output
-              id: output
-              run: |
-                echo spring_apps_service_name=$(terraform output -raw spring_apps_service_name) >> $GITHUB_OUTPUT
-                echo spring_apps_rg=$(terraform output -raw spring_apps_rg) >> $GITHUB_OUTPUT
+    needs:
+      [deploy_hub_network, deploy_lz_shared, deploy_hub_firewall, conditions]
+    name: Deploy 06 LZ Spring Apps Standard
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
+      ENVIRONMENT: ${{needs.conditions.outputs.environment}}
+      REGION: ${{ needs.conditions.outputs.region}}
+    outputs:
+      spring_apps_service_name: ${{ steps.output.outputs.spring_apps_service_name }}
+      spring_apps_rg: ${{ steps.output.outputs.spring_apps_rg }}
+    defaults:
+      run:
+        working-directory: infra/06-LZ-SpringApps-Standard
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_wrapper: false
+      - name: Terraform Init
+        run: |
+          terraform init \
+          -backend-config="resource_group_name=${{ secrets.TFSTATE_RG }}" \
+          -backend-config="storage_account_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -backend-config="container_name=${{ secrets.CONTAINERNAME }}"
+      - name: Terraform Plan
+        run: |
+          terraform plan -out my.plan \
+          -var="state_sa_rg=${{ secrets.TFSTATE_RG }}" \
+          -var="state_sa_name=${{ secrets.STORAGEACCOUNTNAME }}" \
+          -var="state_sa_container_name=${{ secrets.CONTAINERNAME }}" \
+          -var="location=${{ env.REGION }}" \
+          -var="name_prefix=${{ env.NAME_PREFIX }}" \
+          -var="environment=${{ env.ENVIRONMENT }}" \
+          -var="SPRINGAPPS_SPN_OBJECT_ID=${{ secrets.SPRINGAPPS_SPN_OBJECT_ID }}"
+      - name: Terraform Apply
+        run: terraform apply my.plan
+      - name: Terraform Output
+        id: output
+        run: |
+          echo spring_apps_service_name=$(terraform output -raw spring_apps_service_name) >> $GITHUB_OUTPUT
+          echo spring_apps_rg=$(terraform output -raw spring_apps_rg) >> $GITHUB_OUTPUT
   deploy_pet_clinic_infra:
     name: Deploy Pet Clinic Infrastructure
     needs: [deploy_lz_standard, deploy_lz_shared, deploy_lz_network, conditions]
     runs-on: ubuntu-latest
+    environment: dev
     if: ${{ false }}
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
@@ -351,6 +356,7 @@ jobs:
     name: Build and Deploy Pet Clinic Microservices
     needs: [deploy_pet_clinic_infra, deploy_lz_standard, conditions]
     runs-on: ubuntu-latest
+    environment: dev
     if: ${{ false }}
     env:
       SPRING_APPS_SERVICE_NAME: ${{ needs.deploy_lz_standard.outputs.spring_apps_service_name }}
@@ -448,6 +454,7 @@ jobs:
         build,
       ]
     runs-on: ubuntu-latest
+    environment: dev
     if: ${{ false }}
     # if: needs.conditions.outputs.destroy == 'true'
     env:
@@ -489,6 +496,7 @@ jobs:
     needs: [conditions, deploy_lz_standard, destroy_pet_clinic_infra]
     name: Destroy 06 LZ Spring Apps Standard
     runs-on: ubuntu-latest
+    environment: dev
     if: needs.conditions.outputs.destroy == 'true'
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
@@ -527,6 +535,7 @@ jobs:
     needs: [destroy_lz_standard, conditions]
     name: Destroy 05 Hub Firewall
     runs-on: ubuntu-latest
+    environment: dev
     if: needs.conditions.outputs.destroy == 'true'
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
@@ -565,6 +574,7 @@ jobs:
     needs: [destroy_hub_firewall, conditions]
     name: Destroy 04 LZ Shared Resources
     runs-on: ubuntu-latest
+    environment: dev
     if: needs.conditions.outputs.destroy == 'true'
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
@@ -605,6 +615,7 @@ jobs:
     needs: [destroy_lz_shared, conditions]
     name: Destroy 03 LZ Network
     runs-on: ubuntu-latest
+    environment: dev
     if: needs.conditions.outputs.destroy == 'true'
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
@@ -642,6 +653,7 @@ jobs:
     name: Destroy 02 Hub Network
     needs: [destroy_lz_network, conditions]
     runs-on: ubuntu-latest
+    environment: dev
     if: needs.conditions.outputs.destroy == 'true'
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
