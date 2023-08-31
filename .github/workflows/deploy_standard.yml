@@ -355,8 +355,7 @@ jobs:
     name: Build and Deploy Pet Clinic Microservices
     needs: [deploy_pet_clinic_infra, deploy_lz_standard, conditions]
     runs-on: ubuntu-latest
-    environment: dev
-    if: ${{ false }}
+    environment: dev    
     env:
       SPRING_APPS_SERVICE_NAME: ${{ needs.deploy_lz_standard.outputs.spring_apps_service_name }}
     steps:
