@@ -448,8 +448,7 @@ jobs:
         deploy_lz_standard,
         deploy_lz_network,
         deploy_lz_shared,
-        deploy_pet_clinic_infra,
-        build,
+        deploy_pet_clinic_infra
       ]
     runs-on: ubuntu-latest
     environment: dev    
