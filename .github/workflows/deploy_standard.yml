@@ -355,7 +355,8 @@ jobs:
     name: Build and Deploy Pet Clinic Microservices
     needs: [deploy_pet_clinic_infra, deploy_lz_standard, conditions]
     runs-on: ubuntu-latest
-    environment: dev    
+    environment: dev
+    if: needs.conditions.outputs.destroy == 'false'    
     env:
       SPRING_APPS_SERVICE_NAME: ${{ needs.deploy_lz_standard.outputs.spring_apps_service_name }}
     steps:
@@ -451,9 +452,8 @@ jobs:
         build,
       ]
     runs-on: ubuntu-latest
-    environment: dev
-    if: ${{ false }}
-    # if: needs.conditions.outputs.destroy == 'true'
+    environment: dev    
+    if: needs.conditions.outputs.destroy == 'true'
     env:
       NAME_PREFIX: ${{needs.conditions.outputs.name_prefix}}
       ENVIRONMENT: ${{needs.conditions.outputs.environment}}
