@@ -10,7 +10,7 @@ env:
   DEPLOY_FIREWALL_STANDARD: false
 
   # === Destroy All ==
-  DESTROY_STANDARD: false
+  DESTROY_STANDARD: true
 
   # === Baseline Parameters ====:
   REGION: swedencentral
