@@ -14,7 +14,7 @@ env:
 
   # === Baseline Parameters ====:
   REGION: swedencentral
-  NAME_PREFIX: springlza
+  NAME_PREFIX: pjspring
   ENVIRONMENT: dev
 
   # === Spring Apps Service ===:
